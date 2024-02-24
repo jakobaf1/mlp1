@@ -12,4 +12,4 @@ print(raisin.metadata)
   
 # variable information 
 print(raisin.variables)
-print(X.Area[2])
+print(X.Area[pik])
