@@ -17,15 +17,7 @@ classNames = sorted(set(classLabels))
 classDict = dict(zip(classNames, range(2)))
 
 y = np.asarray([classDict[value] for value in classLabels])
-
-
 C = len(classNames)
-  
-# metadata 
-# print(raisin.metadata) 
-  
-# # variable information 
-# print(raisin.variables)
 
 # translating data to matrix format
 X = np.empty((N, 7))
@@ -37,14 +29,17 @@ X[:,4] = np.asarray(X1.ConvexArea)
 X[:,5] = np.asarray(X1.Extent)
 X[:,6] = np.asarray(X1.Perimeter)
 
-Y = X - np.ones((N, 1))*X.mean(axis=0)
+# We standardize the data since we have very different scales in our data
+Y = (X - np.ones((N, 1))*X.mean(axis=0))*1/X.std(axis=0)
 
+# We get the PCA using svd of Y
 U, S, V = svd(Y, full_matrices=False)
 
 # Array with variances for each PC
 rho = (S * S) / (S * S).sum()
-# print(rho)
-
+print(rho)
+# Contribution of each parameter to PC1
+print(V[0])
 # Plot variance explained
 plt.figure()
 plt.plot(range(1, len(rho) + 1), rho, "x-")
@@ -63,7 +58,7 @@ Z = Y @ Vh
 i = 0
 j = 1
 
-# Plot for PC1 and PC2 (using Z) or standard scatter plot (Using X)
+# Plot for PC(i+1) and PC(j+1)
 plt.title("Raisin data: PCA")
 for c in range(C):
     # select indices belonging to class c:

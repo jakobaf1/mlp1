@@ -55,6 +55,8 @@ print("standard deviation of Extent:", np.std(X1.Extent)) # standard deviation o
 print(X1.Area.size)
 
 # statistical data visualization
+logX0 = np.log10(X[:,0])
+
 # Scatter plots:
 plt.figure()
 plt.plot(X[:,0], X[:, 4], "o", alpha=0.5)
@@ -71,10 +73,15 @@ plt.ylabel("Perimeter")
 plt.show()
 
 # Boxplots:
-data1 = [X[:,0], X[:,4]]
+plt.figure()
+plt.boxplot(X[:,0])
+plt.title("Boxplot of Area")
+plt.show()
+
+data1 = [logX0]
 plt.figure()
 plt.boxplot(data1)
-plt.title("Boxplot of Area and ConvexArea")
+plt.title("Boxplot of log10-transformed Area")
 plt.show()
 
 data2 = [X[:,3], X[:,5]]
@@ -83,21 +90,23 @@ plt.boxplot(data2)
 plt.title("Boxplot of Eccentricity and extent")
 plt.show()
 
-# Histograms:
+# Histograms + normaldist:
 plt.figure()
-plt.hist(X[:,0])
-plt.title("Histogram of Area")
-plt.ylabel("Area")
+plt.hist(X[:,0], density=True)
 plt.show()
 
-# Normal Distributions:
-mean = np.mean(X[:,0])
-std = np.std(X[:,0])
-print(np.mean(X[:,0]))
-x = np.arange(mean-3*std, mean+3*std, 1)
 plt.figure()
+plt.hist(logX0, density=True)
+mean = np.mean(logX0)
+std = np.std(logX0)
+x = np.arange(mean-4*std, mean+4*std, 0.01)
 plt.plot(x, stats.norm.pdf(x, mean, std))
 plt.title("Normal distribution of Area")
-plt.ylabel("percentile x 10^(-5)")
 plt.xlabel("Area")
 plt.show()
+
+# Correlations between variables:
+np.corrcoef((X[:,0],X[:,4])) # Area and ConvexArea
+
+# Example of calculating area of raisin from axis and comparing to area measured
+print(X[1,0], " = ", X[1,1]/2, "*", X[1,2]/2, "*", np.pi, " = ", X[1,1]/2*X[1,2]/2*np.pi)
