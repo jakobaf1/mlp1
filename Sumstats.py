@@ -55,7 +55,11 @@ print("standard deviation of Extent:", np.std(X1.Extent)) # standard deviation o
 print(X1.Area.size)
 
 # statistical data visualization
+#Determining log10 of features from area to extent
 logX0 = np.log10(X[:,0])
+
+
+
 
 # Scatter plots:
 plt.figure()
@@ -92,17 +96,29 @@ plt.show()
 
 # Histograms + normaldist:
 plt.figure()
-plt.hist(X[:,0], density=True)
-plt.show()
+plt.hist(X[:,0], density=True) #without log10
 
+plotLabelArray=np.array(["Area","MajorAxisLength","MinorAxisLength","Eccentricity","ConvexArea","Extent","Perimeter"])
 plt.figure()
-plt.hist(logX0, density=True)
-mean = np.mean(logX0)
-std = np.std(logX0)
-x = np.arange(mean-4*std, mean+4*std, 0.01)
-plt.plot(x, stats.norm.pdf(x, mean, std))
-plt.title("Normal distribution of Area")
-plt.xlabel("Area")
+plt.suptitle("Normal distribution of attributes Log-Transformed",fontsize=18)
+for i in range(0,7): #withlog10 for all non-nominal features
+   if i == 6:
+        plt.subplot(3,3,i+2)
+        plt.hist(np.log10(X[:,i]), density=True)
+        mean = np.mean(np.log10(X[:,i]))
+        std = np.std(np.log10(X[:,i]))
+        x = np.arange(mean-4*std, mean+4*std, 0.01)
+        plt.plot(x, stats.norm.pdf(x, mean, std))
+        plt.xlabel(plotLabelArray[i])
+   else:
+        plt.subplot(3,3,i+1)
+        plt.hist(np.log10(X[:,i]), density=True)
+        mean = np.mean(np.log10(X[:,i]))
+        std = np.std(np.log10(X[:,i]))
+        x = np.arange(mean-4*std, mean+4*std, 0.01)
+        plt.plot(x, stats.norm.pdf(x, mean, std))
+        plt.xlabel(plotLabelArray[i])  
+   
 plt.show()
 
 # Correlations between variables:
