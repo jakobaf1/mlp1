@@ -56,7 +56,11 @@ from seaborn import pairplot
 # print(X1.Area.size)
 
 # statistical data visualization
+#Determining log10 of features from area to extent
 logX0 = np.log10(X[:,0])
+
+
+
 
 # Scatter plots:
 # plt.figure()
@@ -95,6 +99,28 @@ logX0 = np.log10(X[:,0])
 # plt.title("Normal distribution of Area")
 # plt.xlabel("Area")
 # plt.show()
+plotLabelArray=np.array(["Area","MajorAxisLength","MinorAxisLength","Eccentricity","ConvexArea","Extent","Perimeter"])
+plt.figure()
+plt.suptitle("Normal distribution of attributes Log-Transformed",fontsize=18)
+for i in range(0,7): #withlog10 for all non-nominal features
+   if i == 6:
+        plt.subplot(3,3,i+2)
+        plt.hist(np.log10(X[:,i]), density=True)
+        mean = np.mean(np.log10(X[:,i]))
+        std = np.std(np.log10(X[:,i]))
+        x = np.arange(mean-4*std, mean+4*std, 0.01)
+        plt.plot(x, stats.norm.pdf(x, mean, std))
+        plt.xlabel(plotLabelArray[i])
+   else:
+        plt.subplot(3,3,i+1)
+        plt.hist(np.log10(X[:,i]), density=True)
+        mean = np.mean(np.log10(X[:,i]))
+        std = np.std(np.log10(X[:,i]))
+        x = np.arange(mean-4*std, mean+4*std, 0.01)
+        plt.plot(x, stats.norm.pdf(x, mean, std))
+        plt.xlabel(plotLabelArray[i])  
+   
+plt.show()
 
 # Correlations between variables:
 # pairplot(np.log(X1))
