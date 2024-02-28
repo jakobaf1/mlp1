@@ -67,5 +67,23 @@ for c in range(C):
 plt.legend(classNames)
 plt.xlabel("PC{0}".format(i + 1))
 plt.ylabel("PC{0}".format(j + 1))
+plt.show()
+
+# Plot visualising feature coefficients for PCs
+N, M = X.shape
+pcs = [0, 1, 2]
+legendStrs = ["PC" + str(e + 1) for e in pcs]
+c = ["r", "g", "b"]
+bw = 0.2
+r = np.arange(1, M + 1)
+for i in pcs:
+    plt.bar(r + i * bw, Vh[:, i], width=bw)
+plt.xticks(r + bw, ["Area", "MajorAxisLength", "MinorAxisLength", "Eccentricity", "ConvexArea", "Extent", "Perimeter"])
+plt.xlabel("Attributes")
+plt.ylabel("Component coefficients")
+plt.legend(legendStrs)
+plt.grid()
+plt.title("PCA Component Coefficients")
+plt.show()
 
 
